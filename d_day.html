@@ -2,144 +2,183 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Montserrat:900">
-    <title>Document</title>
-    <style>
-        body {
-            background-color: white;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Montserrat:900">
+  <title>Document</title>
+  <style>
+    body {
+      background-color: white;
+    }
 
-        #timer {
-            color: #eeeeee;
-            text-align: center;
-            text-transform: uppercase;
-            font-family: 'Lato', sans-serif;
-            font-size: .7em;
-            letter-spacing: 5px;
-        }
+    #timer {
+      color: #eeeeee;
+      text-align: center;
+      text-transform: uppercase;
+      font-family: 'Lato', sans-serif;
+      font-size: .7em;
+      letter-spacing: 5px;
+    }
 
-        .days,
-        .hours,
-        .minutes,
-        .seconds {
-            display: inline-block;
-            padding: 20px;
-            width: 100px;
-            border-radius: 5px;
-        }
+    .days,
+    .hours,
+    .minutes,
+    .seconds {
+      display: inline-block;
+      padding: 20px;
+      width: 100px;
+      border-radius: 5px;
+    }
 
-        .days {
-            background: #EF2F3C;
-        }
+    .days {
+      background: #EF2F3C;
+    }
 
-        .hours {
-            background: #eeeeee;
-            color: #183059;
-        }
+    .hours {
+      background: #eeeeee;
+      color: #183059;
+    }
 
-        .minutes {
-            background: #276FBF;
-        }
+    .minutes {
+      background: #276FBF;
+    }
 
-        .seconds {
-            background: #F0A202;
-        }
+    .seconds {
+      background: #F0A202;
+    }
 
-        .numbers {
-            font-family: 'Montserrat', sans-serif;
-            color: #183059;
-            font-size: 4em;
-            text-align: center;
-        }
+    .numbers {
+      font-family: 'Montserrat', sans-serif;
+      color: #183059;
+      font-size: 4em;
+      text-align: center;
+    }
 
-        .white {
-            position: absolute;
-            background: #eeeeee;
-            height: 85px;
-            width: 75px;
-            left: 30%;
-            top: 2%;
-        }
+    .white {
+      position: absolute;
+      background: #eeeeee;
+      height: 85px;
+      width: 75px;
+      left: 30%;
+      top: 2%;
+    }
 
-        .red {
-            position: absolute;
-            background: #EF2F3C;
-            left: 18%;
-            top: 9%;
-            height: 65px;
-            width: 70px;
+    .red {
+      position: absolute;
+      background: #EF2F3C;
+      left: 18%;
+      top: 9%;
+      height: 65px;
+      width: 70px;
+    }
 
-        }
-
-        .blue {
-            position: absolute;
-            background: #276FBF;
-            height: 80px;
-            width: 80px;
-            left: 60%;
-            top: 5%;
-
-
-        }
-    </style>
+    .blue {
+      position: absolute;
+      background: #276FBF;
+      height: 80px;
+      width: 80px;
+      left: 60%;
+      top: 5%;
+    }
+  </style>
 </head>
 
 <body>
-
-    <div id="timer">
-
-        <div class="days">
-            <div id="days" class="numbers "> </div>days
-        </div>
-        <div class="hours">
-            <div id="hours" class="numbers"> </div>hours
-        </div>
-        <div class="minutes">
-            <div id="minutes" class="numbers"> </div>minutes
-        </div>
-        <div class="seconds">
-            <div id="seconds" class="numbers"> </div>seconds
-        </div>
+  <div id="timer">
+    <div class="days">
+      <div id="days" class="numbers "> </div>days
     </div>
-
+    <div class="hours">
+      <div id="hours" class="numbers"> </div>hours
     </div>
-
+    <div class="minutes">
+      <div id="minutes" class="numbers"> </div>minutes
+    </div>
+    <div class="seconds">
+      <div id="seconds" class="numbers"> </div>seconds
+    </div>
+  </div>
 </body>
 <script>
-    function searchParam(key) {
-        return new URLSearchParams(location.search).get(key);
-    };
 
-    const dDayString = searchParam('d-day') || '2024-01-01';
-    const dDayTimeString = searchParam('d-time') || '00:00:00'
+  const style = {
+    purple: {
+      days: {
+        backgroud: '#E08AF4',
+        color: 'white'
+      },
+      hours: {
+        backgroud: '#DAA9F8',
+        color: '#183059'
+      },
+      minutes: {
+        backgroud: '#EDBDF9',
+        color: 'white'
+      },
+      seconds: {
+        backgroud: '#F2DAF5',
+        color: '#183059'
+      }
+    }
+  }
 
-    const dDay = new Date(`${dDayString} ${dDayTimeString}`);
+  function searchParam(key) {
+    return new URLSearchParams(location.search).get(key);
+  };
 
-    console.log(dDay);
+  function changeColor(className, color) {
+    const elements = document.getElementsByClassName(className);
 
-    // countdown
-    let timer = setInterval(function () {
+    for (var i = 0, len = elements.length; i < len; i++) {
+      elements[i].style["background"] = color.backgroud;
+      elements[i].style["color"] = color.color;
+    }
+  }
 
-        // get today's date
-        const today = new Date().getTime();
+  const applyStyle = style[searchParam('style')]
 
-        // get the difference
-        const diff = dDay - today;
+  const dDayString = searchParam('d-day') || '2024-01-01';
+  const dDayTimeString = searchParam('d-time') || '00:00:00'
 
-        // math
-        let days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        let hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        let seconds = Math.floor((diff % (1000 * 60)) / 1000);
+  const dDay = new Date(`${dDayString} ${dDayTimeString}`);
 
-        // display
-        document.getElementById("days").innerHTML = days
-        document.getElementById("hours").innerHTML = hours
-        document.getElementById("minutes").innerHTML = minutes
-        document.getElementById("seconds").innerHTML = seconds
-    }, 1);
+  console.log(dDay);
+
+  // countdown
+  let timer = setInterval(function () {
+
+    // get today's date
+    const today = new Date().getTime();
+
+    // get the difference
+    const diff = dDay - today;
+
+    // math
+    let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    let hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    let seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    // display
+    const dayElement = document.getElementById("days");
+    const hoursElement = document.getElementById("hours");
+    const minutesElement = document.getElementById("minutes");
+    const secondsElement = document.getElementById("seconds");
+
+    dayElement.innerHTML = days;
+    hoursElement.innerHTML = hours;
+    minutesElement.innerHTML = minutes;
+    secondsElement.innerHTML = seconds;
+
+    if (applyStyle) {
+      changeColor('days', applyStyle.days)
+      changeColor('hours', applyStyle.hours)
+      changeColor('minutes', applyStyle.minutes)
+      changeColor('seconds', applyStyle.seconds)
+    }
+
+  }, 1);
+
 </script>
 
 </html>
